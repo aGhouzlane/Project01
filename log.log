@@ -1,0 +1,6 @@
+
+insert into cars ( model, make, year, price) values ('dkjf', 'hgh', '77', '7878.0') returning id
+2020/01/20 19:13:15: insert into cars ( model, make, year, price) values ('kjk', 'jkj', '898', '787.0') returning id
+2020/01/21 00:13:41: insert into cars ( model, make, year, price) values ('null', 'null', '0', '0.0') returning id
+2020/01/21 00:20:56: insert into cars ( model, make, year, price) values ('d5', 'tesla', '2020', '500000.0') returning id
+2020/01/21 01:15:20: delete from cars where id = 11
