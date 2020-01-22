@@ -4,3 +4,22 @@ insert into cars ( model, make, year, price) values ('dkjf', 'hgh', '77', '7878.
 2020/01/21 00:13:41: insert into cars ( model, make, year, price) values ('null', 'null', '0', '0.0') returning id
 2020/01/21 00:20:56: insert into cars ( model, make, year, price) values ('d5', 'tesla', '2020', '500000.0') returning id
 2020/01/21 01:15:20: delete from cars where id = 11
+2020/01/21 20:30:12: insert into cars ( make, model, year, price) values ('null', 'null', '0', '0.0') returning id
+2020/01/21 20:33:06: update cars set make = 'null' , model = 'null', year = '0', price = '0.0' where id = 12
+2020/01/21 20:44:37: insert into cars ( model, make, year, price) values ('A4', 'Audi', '2020', '30000.0') returning id
+2020/01/21 22:00:06: insert into offers ( amount, decision, carId) values ('30500.0', 'false', '13') returning id
+2020/01/21 22:30:13: insert into offers ( amount, decision, carId) values ('3000.0', 'false', '7') returning id
+2020/01/21 22:37:02: insert into offers ( amount, decision, carId) values ('29999.0', 'false', '6') returning id
+2020/01/21 23:29:38: update offers set decision = 'true' where id = 0
+2020/01/21 23:33:17: update offers set decision = 'true' where id = 0
+2020/01/21 23:37:01: update offers set decision = 'false' where id = 0
+2020/01/21 23:43:44: update offers set decision = true where id = 0
+2020/01/21 23:45:50: update offers set decision = true where id = 1
+2020/01/21 23:54:10: update offers set decision = true where id = 2
+2020/01/22 00:14:25: update offers set decision = true where id = 3
+2020/01/22 00:17:32: update offers set decision = true where id = 3
+2020/01/22 01:10:18: insert into offers ( amount, decision, carId) values ('20000.0', 'false', '13') returning id
+2020/01/22 01:11:52: insert into cars ( model, make, year, price) values ('d5', 'Tesla', '2020', '90000.0') returning id
+2020/01/22 01:13:12: delete from cars where id = 14
+2020/01/22 01:15:23: update offers set amount = '20000.0' , decision = 'false', carId = '13' where id = 4
+2020/01/22 01:16:25: update offers set decision = true where id = 4

@@ -7,16 +7,17 @@ import java.util.Scanner;
 
 import com.revature.pojo.Car;
 import com.revature.pojo.Employee;
+import com.revature.pojo.Offer;
 import com.revature.pojo.User;
-import com.revature.service.CarService;
 import com.revature.service.EmployeeLoginService;
-import com.revature.service.OfferService;
 import com.revature.service.UserLoginService;
 
 public class App {
 
 	private static UserLoginService uls = new UserLoginService();
 	private static EmployeeLoginService els = new EmployeeLoginService();
+	private static Offer offer = new Offer();
+	private static Car car = new Car();
 	private static User user = new User();
 	private static Scanner scan = new Scanner(System.in);
 
@@ -90,7 +91,7 @@ public class App {
 
 		Scanner loginInput = new Scanner(System.in);
 
-		switch (loginInput.nextLine()) {
+		switch (loginInput.next()) {
 		case "1":
 			if (((UserLoginService) uls).authenticateUser(getUserInfo())) {
 				System.out.println("User Login Success");
@@ -121,14 +122,17 @@ public class App {
 
 	private static User getUserInfo() {
 
+		Scanner scan = new Scanner(System.in);
 		System.out.println("Enter username:");
-		user.setUsername(scan.nextLine());
+		user.setUsername(scan.next());
 		System.out.println("Enter password:");
-		user.setPassword(scan.nextLine());
+		user.setPassword(scan.next());
 		return user;
 	}
 
 	private static Employee getEmployeeInfo() {
+		
+		Scanner scan = new Scanner(System.in);
 		Employee employee = new Employee();
 		System.out.println("Enter Employee Name:");
 		employee.setEmployeename(scan.nextLine());
@@ -139,12 +143,13 @@ public class App {
 
 	private static void employeeMenu() {
 
-		System.out.println("---Welcome to the Employee Menu!---");
+		System.out.println("---Welcome to the Employee Menu---");
 		System.out.println("Please Make a Selection:");
 		System.out.println("[1] To add a car");
 		System.out.println("[2] To remove a Car");
 		System.out.println("[3] To accept/reject an Offer");
-		System.out.println("[4] Main menu");
+		System.out.println("[4] View all payments");
+		System.out.println("[5] Main menu");
 
 		Scanner employeeInput = new Scanner(System.in);
 
@@ -160,12 +165,14 @@ public class App {
 			employeeMenu();
 			break;
 		case "3":
-			// TODO: Accept/Reject offer
-			// os.displayOffer();
-			// os.makeDecision();
+			displayOffers();
 			employeeMenu();
 			break;
 		case "4":
+			// TODO: view all payments
+			employeeMenu();
+			break;
+		case "5":
 			mainMenu();
 			break;
 		default:
@@ -174,10 +181,50 @@ public class App {
 			break;
 		}
 	}
+	
+	public static void displayOffers() 
+	{
+		try {
+			ArrayList<Offer> offers = Offer.all();
+			for(Offer o : offers) 
+			{	
+				System.out.println(o);
+			}
+			
+			System.out.println("Choose an offerid you wish to make a decision on:");
+			int chosenId = scan.nextInt();
+			
+			for(Offer o : offers) 
+			{
+				if(o.getId() == chosenId) 
+				{
+					System.out.println(o);
+					System.out.println("Do you want to accept this offer?");
+					
+					if(scan.next().equals("yes")) 
+					{
+						try {
+							offer.update(o.getId());
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						System.out.println("Offer Accepted.");
+						break;
+					}
+					else 
+					{
+						System.out.println("Offer Rejected.");
+					}
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+	}
 
 	public static void addCarMenu() {
-		
-		Car car = new Car();
 		
 		System.out.println("Please enter car information:");
 		System.out.println("Make:");
@@ -204,7 +251,7 @@ public class App {
 	private static void deleteCarMenu() 
 	{
 		System.out.println("Please enter the car id you wish to delete:");
-		Car car = new Car();
+		
 		try {
 			car.delete(scan.nextInt());
 		} catch (SQLException e) {
@@ -215,22 +262,45 @@ public class App {
 			e.printStackTrace();
 		}
 	}
+	
+	private static void makeOfferMenu() 
+	{
+		System.out.println("Please enter the id of the car you wish to buy:");
+		offer.setCarId(scan.nextInt());
+		
+		System.out.println("Please enter your final offer:");
+		offer.setAmount(scan.nextFloat());
+		
+		try {
+			offer.save();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("Offer submitted successfully.");
+	}
 
 	private static void userMenu() {
+		
 		System.out.println("---Welcome to the User Menu!---");
 		System.out.println("Please make a selection:");
 		System.out.println("[1] View a car");
 		System.out.println("[2] Make an offer");
 		System.out.println("[3] View owned cars");
-		System.out.println("[4] Main menu");
+		System.out.println("[4] Make a payment");
+		System.out.println("[5] Main menu");
 
 		Scanner userInput = new Scanner(System.in);
 
 		switch (userInput.nextLine()) {
 		case "1":
-			// cs.viewCars();
+			
 			try {
-				System.out.println("shows all cars");
+				System.out.println("Displaying all cars...");
 				ArrayList<Car> cars = Car.all();
 
 				for (Car car : cars) {
@@ -244,15 +314,18 @@ public class App {
 			break;
 		case "2":
 			// TODO: make an offer
-			// os.makeOffer();
+			makeOfferMenu(); 
 			userMenu();
 			break;
 		case "3":
 			// TODO: view owned cars
-			// os.displayOwnedCars();
 			userMenu();
 			break;
 		case "4":
+			// TODO: make a payment
+			userMenu();
+			break;
+		case "5":
 			mainMenu();
 			break;
 		default:
